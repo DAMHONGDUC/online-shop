@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:online_shop/components/categories.dart';
+import 'package:online_shop/components/item_card.dart';
 import 'package:online_shop/models/Product.dart';
+import 'package:online_shop/models/ProductType.dart';
 import 'package:online_shop/values/app_colors.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  PageController _pageController = PageController();
+  int selectedIndex = 0;
+  List<Product> currListProducts = [];
+  List<Product> getProduct_withType(String type) {
+    List<Product> newList = [];
+    products.forEach((element) {
+      if (element.type == type) newList.add(element);
+    });
+    return newList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,59 +38,83 @@ class Body extends StatelessWidget {
                 fontWeight: FontWeight.bold),
           ),
         ),
+        //Categories
         Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Categories(),
+          padding: const EdgeInsets.only(top: 4, left: 10, right: 10),
+          child: Container(
+            height: 40,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: productType.length,
+                itemBuilder: (context, index) => buildCategories(index)),
+          ),
         ),
+        //PageView
         Expanded(
           child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: GridView.builder(
-                  itemCount: products.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.7,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20),
-                  itemBuilder: (context, index) => itemCard(index: index)),
-            ),
+            child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                },
+                itemCount: productType.length,
+                itemBuilder: (context, index) =>
+                    pageViewProducts_withType(index)),
           ),
         )
       ],
     );
   }
-}
 
-class itemCard extends StatelessWidget {
-  final int index;
-  const itemCard({Key? key, required this.index}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-              color: products[index].color,
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: Image.asset(products[index].image.toString()),
-        ),
-        Container(
-            margin: const EdgeInsets.only(top: 8, bottom: 7),
-            child: Text(
-              products[index].title.toString(),
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 117, 117, 117)),
-            )),
-        Text('\$' + products[0].price.toString(),
+  Widget buildCategories(int index) {
+    return GestureDetector(
+      onTap: () {
+        _pageController.animateToPage(index,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            productType[index].type.toString(),
             style: TextStyle(
-                color: AppColor.TextColor, fontWeight: FontWeight.bold))
-      ],
+                color: selectedIndex == index
+                    ? AppColor.TextColor
+                    : AppColor.TextLightColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 14),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 3),
+            height: 2,
+            width: 30,
+            color: selectedIndex == index ? Colors.black : null,
+          )
+        ]),
+      ),
+    );
+  }
+
+  Container pageViewProducts_withType(int index_type) {
+    currListProducts =
+        getProduct_withType(productType[index_type].type.toString());
+    return Container(
+      margin: const EdgeInsets.only(top: 10, bottom: 20),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: GridView.builder(
+            itemCount: currListProducts.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.7,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 20),
+            itemBuilder: (context, index) =>
+                itemCard(product: currListProducts[index])),
+      ),
     );
   }
 }

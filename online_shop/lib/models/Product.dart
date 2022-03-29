@@ -4,6 +4,7 @@ class Product {
   String? image, title, des;
   int? price, size, id;
   Color? color;
+  String? type;
 
   Product({
     this.id,
@@ -13,6 +14,7 @@ class Product {
     this.size,
     this.color,
     this.des,
+    this.type,
   });
 }
 
@@ -24,13 +26,15 @@ List<Product> products = [
       size: 12,
       des: dummyText,
       image: "assets/images/bag_1.png",
-      color: Color(0xFF3D82AE)),
+      color: Color(0xFF3D82AE),
+      type: "Hand Bag"),
   Product(
       id: 2,
       title: "Belt Bag",
       price: 234,
       size: 8,
       des: dummyText,
+      type: "Hand Bag",
       image: "assets/images/bag_2.png",
       color: Color(0xFFD3A984)),
   Product(
@@ -39,6 +43,7 @@ List<Product> products = [
       price: 234,
       size: 10,
       des: dummyText,
+      type: "Hand Bag",
       image: "assets/images/bag_3.png",
       color: Color(0xFF989493)),
   Product(
@@ -47,6 +52,7 @@ List<Product> products = [
       price: 234,
       size: 11,
       des: dummyText,
+      type: "Hand Bag",
       image: "assets/images/bag_4.png",
       color: Color(0xFFE6B398)),
   Product(
@@ -55,6 +61,7 @@ List<Product> products = [
       price: 234,
       size: 12,
       des: dummyText,
+      type: "Hand Bag",
       image: "assets/images/bag_5.png",
       color: Color(0xFFFB7883)),
   Product(
@@ -63,6 +70,36 @@ List<Product> products = [
     price: 234,
     size: 12,
     des: dummyText,
+    type: "Hand Bag",
+    image: "assets/images/bag_6.png",
+    color: Color(0xFFAEAEAE),
+  ),
+  Product(
+    id: 7,
+    title: "Office Code",
+    price: 234,
+    size: 12,
+    des: dummyText,
+    type: "Jewellery",
+    image: "assets/images/bag_6.png",
+    color: Color(0xFFAEAEAE),
+  ),
+  Product(
+      id: 8,
+      title: "Office Code",
+      price: 234,
+      size: 12,
+      des: dummyText,
+      type: "Dresses",
+      image: "assets/images/bag_5.png",
+      color: Color(0xFFFB7883)),
+  Product(
+    id: 9,
+    title: "Office Code",
+    price: 234,
+    size: 12,
+    des: dummyText,
+    type: "Dresses",
     image: "assets/images/bag_6.png",
     color: Color(0xFFAEAEAE),
   ),
